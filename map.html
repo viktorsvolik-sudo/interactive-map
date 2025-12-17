@@ -37,6 +37,13 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    // Stamen Toner (high contrast)
+L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
+  attribution: 'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, &copy; OSM',
+  subdomains: 'abcd',
+  maxZoom: 20
+}).addTo(map);
+
     // Souřadnice markerů
     const locations = [
       { name: "Perseus", lat: 50.083598, lng: 14.454422 },
