@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interactive Map</title>
 
+<!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <style>
@@ -16,7 +17,7 @@
 
   #map {
     width: 100%;
-    height: 100%;
+    height: 600px; /* Fixed height works better in Cargo */
   }
 </style>
 </head>
@@ -24,37 +25,42 @@
 
 <div id="map"></div>
 
+<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // Inicializace mapy
-  const map = L.map('map');
+  window.addEventListener('DOMContentLoaded', () => {
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
+    // Inicializace mapy
+    const map = L.map('map');
 
-  // Souřadnice markerů
-  const locations = [
-    { name: "Perseus", lat: 50.083598, lng: 14.454422 },
-    { name: "Capheus", lat: 50.079709, lng: 14.444321 },
-    { name: "Lepus", lat: 50.098501, lng: 14.437247 },
-    { name: "Aquarius", lat: 50.068407, lng: 14.428441 },
-    { name: "Orion", lat: 50.094093, lng: 14.414843 }
-  ];
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-  // Přidání markerů
-  const markers = locations.map(loc => L.marker([loc.lat, loc.lng]).bindPopup(loc.name));
-  markers.forEach(marker => marker.addTo(map));
+    // Souřadnice markerů
+    const locations = [
+      { name: "Perseus", lat: 50.083598, lng: 14.454422 },
+      { name: "Capheus", lat: 50.079709, lng: 14.444321 },
+      { name: "Lepus", lat: 50.098501, lng: 14.437247 },
+      { name: "Aquarius", lat: 50.068407, lng: 14.428441 },
+      { name: "Orion", lat: 50.094093, lng: 14.414843 }
+    ];
 
-  // Skupina pro fitBounds
-  const group = L.featureGroup(markers);
-  map.fitBounds(group.getBounds().pad(0.15));
+    // Přidání markerů
+    const markers = locations.map(loc => L.marker([loc.lat, loc.lng]).bindPopup(loc.name));
+    markers.forEach(marker => marker.addTo(map));
 
-  // Po malém zpoždění přepočítáme velikost (důležité pro iframe nebo GitHub Pages)
-  setTimeout(() => {
-    map.invalidateSize();
+    // Skupina pro fitBounds
+    const group = L.featureGroup(markers);
     map.fitBounds(group.getBounds().pad(0.15));
-  }, 200);
+
+    // Malé zpoždění pro správné vykreslení v Cargo
+    setTimeout(() => {
+      map.invalidateSize();
+      map.fitBounds(group.getBounds().pad(0.15));
+    }, 500);
+
+  });
 </script>
 
 </body>
