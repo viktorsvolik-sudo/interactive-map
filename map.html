@@ -29,26 +29,27 @@ html, body {
 <script>
 window.addEventListener('DOMContentLoaded', () => {
 
-  // Initialize map
+  // Inicializace mapy
   const map = L.map('map').setView([50.079709, 14.444321], 13);
 
-  // OpenStreetMap tile layer (CORS-friendly, works in Cargo)
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+  // CORS-friendly tile layer (Carto Light)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
     maxZoom: 19
   }).addTo(map);
 
-  // Gold marker icon from CDN (leaflet-color-markers)
+  // Zlatá ikona
   const goldIcon = new L.Icon({
-    iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-gold.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconUrl: 'img/marker-icon-2x-gold.png',
+    shadowUrl: 'img/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
   });
 
-  // Locations
+  // Souřadnice markerů
   const locations = [
     { name: "Perseus", lat: 50.083598, lng: 14.454422 },
     { name: "Capheus", lat: 50.079709, lng: 14.444321 },
@@ -57,17 +58,17 @@ window.addEventListener('DOMContentLoaded', () => {
     { name: "Orion", lat: 50.094093, lng: 14.414843 }
   ];
 
-  // Add markers with gold icon
+  // Přidání markerů s vlastní ikonou
   const markers = locations.map(loc => 
     L.marker([loc.lat, loc.lng], { icon: goldIcon }).bindPopup(loc.name)
   );
   markers.forEach(marker => marker.addTo(map));
 
-  // Fit bounds to markers
+  // FitBounds pro všechny markery
   const group = L.featureGroup(markers);
   map.fitBounds(group.getBounds().pad(0.15));
 
-  // Small delay for correct rendering in Cargo iframe
+  // Malé zpoždění pro správné vykreslení v Cargo
   setTimeout(() => {
     map.invalidateSize();
     map.fitBounds(group.getBounds().pad(0.15));
