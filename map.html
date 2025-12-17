@@ -8,17 +8,20 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
 
 #map {
   width: 100%;
   height: 80vh;
   min-height: 600px;
 }
+
+ /* vhodná výška pro Cargo */
+  }
 </style>
 </head>
 <body>
@@ -27,44 +30,7 @@ html, body {
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', () => {
 
-  // Initialize map
-  const map = L.map('map').setView([50.079709, 14.444321], 13);
-
-  // OpenStreetMap tile layer (CORS-friendly, works in Cargo)
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
-    maxZoom: 19
-  }).addTo(map);
-
-  // Locations
-  const locations = [
-    { name: "Perseus", lat: 50.083598, lng: 14.454422 },
-    { name: "Capheus", lat: 50.079709, lng: 14.444321 },
-    { name: "Lepus", lat: 50.098501, lng: 14.437247 },
-    { name: "Aquarius", lat: 50.068407, lng: 14.428441 },
-    { name: "Orion", lat: 50.094093, lng: 14.414843 }
-  ];
-
-  // Add markers (default blue icon)
-  const markers = locations.map(loc => 
-    L.marker([loc.lat, loc.lng]).bindPopup(loc.name)
-  );
-  markers.forEach(marker => marker.addTo(map));
-
-  // Fit bounds to markers
-  const group = L.featureGroup(markers);
-  map.fitBounds(group.getBounds().pad(0.15));
-
-  // Small delay for correct rendering in Cargo iframe
-  setTimeout(() => {
-    map.invalidateSize();
-    map.fitBounds(group.getBounds().pad(0.15));
-  }, 500);
-
-});
-</script>
-
-</body>
-</html>
+    // Inicializace mapy s pevnou pozicí + zoom
+    const map = L.map('map').setView([50.079709, 14.444]()
