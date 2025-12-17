@@ -33,4 +33,49 @@
   window.addEventListener('DOMContentLoaded', () => {
 
     // Inicializace mapy s pevnou pozicí + zoom
-    const map = L.map('map').setView([50.079709, 14.444]()
+    const map = L.map('map').setView([50.079709, 14.444321], 13);
+
+    // CORS-friendly tile layer (Carto Light)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
+    var goldIcon = new L.Icon({
+	iconUrl: 'img/marker-icon-2x-gold.png',
+	shadowUrl: 'img/marker-shadow.png',
+	iconSize: [25, 41],
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	shadowSize: [41, 41];
+  
+
+    // Souřadnice markerů
+    const locations = [
+      { name: "Perseus", lat: 50.083598, lng: 14.454422 },
+      { name: "Capheus", lat: 50.079709, lng: 14.444321 },
+      { name: "Lepus", lat: 50.098501, lng: 14.437247 },
+      { name: "Aquarius", lat: 50.068407, lng: 14.428441 },
+      { name: "Orion", lat: 50.094093, lng: 14.414843 }
+    ];
+
+    // Přidání markerů
+    const markers = locations.map(loc => L.marker([loc.lat, loc.lng]).bindPopup(loc.name));
+    markers.forEach(marker => marker.addTo(map));
+
+    // FitBounds pro všechny markery
+    const group = L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.15));
+
+    // Malé zpoždění pro správné vykreslení v Cargo
+    setTimeout(() => {
+      map.invalidateSize();
+      map.fitBounds(group.getBounds().pad(0.15));
+    }, 500);
+
+  });
+</script>
+
+</body>
+</html>
